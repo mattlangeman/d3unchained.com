@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: "Open Sans";
+        src: url("/fonts/Open_Sans/OpenSans-Regular.ttf");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: "Open Sans";
+        src: url("/fonts/Open_Sans/OpenSans-Bold.ttf");
+        font-style: bold;
+        font-weight: 700;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: "Montserrat";
+        src: url("/fonts/Montserrat/Montserrat-Regular.ttf");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: "Montserrat";
+        src: url("/fonts/Montserrat/Montserrat-Bold.ttf");
+        font-style: bold;
+        font-weight: 700;
+        font-display: swap;
+    }
+
+    h1.mini-underline::after {
+        content: "";
+        display: block;
+        width: 62%;
+        height: 1px;
+        background-color: #ffffff;
+        margin: auto;
+        margin-top: 10px;
+    }
+}
+
+a.link {
+    @apply text-blue-500;
+}
+
+a.link:hover {
+    @apply text-blue-700;
+}
+
+button.button {
+    @apply bg-blue-500 text-white rounded-md px-4 py-2;
+}
