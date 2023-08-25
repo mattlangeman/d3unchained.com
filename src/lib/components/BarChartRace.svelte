@@ -5,6 +5,7 @@
     import { tweened } from "svelte/motion";
     import { linear } from "svelte/easing";
 
+    /* data and numBars are being passed in from the parent BarChartRaceContainer component */
     export let data;
     export let numBars;
 

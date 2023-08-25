@@ -1,6 +1,6 @@
 <script>
     /*
-        Load the data and pass it to the BarChartRace component.
+        Load data and process the data needed for the BarChartRace component.
     */
     import * as d3 from "d3";
     import BarChartRace from "./BarChartRace.svelte";

@@ -26,8 +26,8 @@
                   Examples
                 </a>
               </div>
-              <div class="mt-3 sm:mt-0 ml-4">
-                <a href="/about" class="w-full flex items-center justify-center px-8 py-3 border border-white text-base font-medium rounded-md text-white hover:text-yellow-400 hover:border-yellow-400 md:py-4 md:text-lg md:px-10">
+              <div class="mt-3 sm:mt-0 md:ml-4">
+                <a href="/about" class="w-full flex items-center justify-center px-8 py-3 border border-white text-base font-medium rounded-md text-white hover:text-yellow-400 hover:border-yellow-400 md:py-4 md:text-lg md:px-12">
                   About
                 </a>
               </div>
@@ -44,8 +44,13 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
     <div class="mt-16">
         <h2 class="text-2xl font-bold font-header tracking-tight">Why D3 Unchained?</h2>
-        <p class="mt-4 text-lg">D3 is a powerful tool, but can have a high learning curve. D3 is often written in an imperative style that involves chaining commands together. For many this is difficult to understand.</p>
-        <p class="mt-4 text-lg">D3 Unchanged shows an alternative way of building visualizations with D3 that is becoming increasingly popular.</p>
+        <p class="mt-4 text-lg">D3 is a powerful tool, but has a steep learning curve.
+          It is often written in an imperative style that involves chaining together commands.
+          For many people this is difficult to understand.</p>
+        <p class="mt-4 text-lg">D3 Unchained shows an alternative way of building visualizations with D3 that is becoming increasingly popular.
+          This approach is more declarative and easier to read, maintain, and extend.
+          The key is using another framework such as React, Vue, or Svelte to manage the DOM and state, while using D3 to load and process the data.
+        </p>
       </div>
 </div>
 
