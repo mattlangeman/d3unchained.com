@@ -90,7 +90,7 @@
 <div class="my-8">
     <h2 class="text-3xl font-bold">Bar Chart Race</h2>
     <p>This chart animates the value (in $M) of the top global brands from 2000 to 2019. Data: <a class="link" href="https://www.interbrand.com/best-brands/">Interbrand</a></p>
-    <p>Based off of <a class="link" href="https://observablehq.com/@d3/bar-chart-race-explained">Mike Bostock's barcart race in Observable</a></p>
+    <p>It is a Svelte version of the <a class="link" href="https://observablehq.com/@d3/bar-chart-race-explained">Mike Bostock's barcart race in Observable</a></p>
 </div>
 
 {#if data}
