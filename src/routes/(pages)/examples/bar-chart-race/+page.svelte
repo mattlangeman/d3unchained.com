@@ -4,7 +4,7 @@
 </script>
 
 <BasicPage>
-    <span slot="title">Examples</span>
+    <span slot="title">Bar Chart Race</span>
     <span slot="content">
         <BarChartRaceContainer />
         <div class="my-8">
