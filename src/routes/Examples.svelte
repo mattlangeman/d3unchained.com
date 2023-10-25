@@ -24,11 +24,28 @@
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                     </svg>`
         },
+        {
+            'title': 'Srolly Bar Example',
+            'url': 'scrolly-bar-chart-v1',
+            'description': `This example uses scrollytelling to compare a bar chart using standard D3 code with one using Svelte + D3 code.`,            'svg': `<svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                    </svg>`
+        },
+        {
+            'title': 'Srolly Bar Example 2',
+            'url': 'scrolly-bar-chart-v2',
+            'description': `This example uses scrollytelling to compare a bar chart using standard D3 code with one using Svelte + D3 code.`,            'svg': `<svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                    </svg>`
+        },
     ]
 </script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="grid lg:grid-cols-3 gap-16">
+    <div>
+        <p class="bg-yellow-100 p-4 rounded-lg">These examples are all works in progress. Most do not yet display nicely on mobile. I am currently experimenting with a few options such as the Scrolly examples to make them more mobile friendly.</p>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-16 mt-4">
     {#each items as item}
         <a href="/examples/{item.url}"
             class="p-8 hover:bg-gray-100">

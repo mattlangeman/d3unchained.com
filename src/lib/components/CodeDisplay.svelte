@@ -38,9 +38,6 @@
                 lines = parsedSteps[stepNum - 1].lines
                 description = parsedSteps[stepNum - 1].description
             }
-            console.log('highlighting')
-            console.log(lines)
-            console.log(description)
             await tick()
             Prism.highlightAllUnder(pre);
         }
@@ -55,19 +52,14 @@
     let codeStringDisplay = codeString.replace(stepCommentRegex, "")
 </script>
 
-<pre bind:this={pre} class="language-svelte line-numbers" data-line="{lines}">
-<code>{codeStringDisplay}</code>
+<pre bind:this={pre} class="language-svelte line-numbers overflow-hidden" data-line="{lines}">
+<code class="overflow-hidden">{codeStringDisplay}</code>
 </pre>
-<div>
-    {#if stepNum > 0 && stepNum <= parsedSteps.length}
-        <h2 class="text-2xl">Step {stepNum}</h2>
-        <p>{description}</p>
-    {/if}
-</div>
 
 <style>
     pre.language-svelte {
         border-radius: 1rem;
         padding-left: 1rem;
+        overflow: hidden;
     }
 </style>

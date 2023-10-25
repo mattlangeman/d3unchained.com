@@ -35,7 +35,7 @@
 </style>
 <!--
 Step 1:
-Description: The div based chart with automatically change the height of the container based on the number of bars.
+Description: The div based chart will automatically change the height of the container based on the number of bars.
 Lines: 13, 20
 
 Step 2:
