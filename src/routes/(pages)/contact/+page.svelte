@@ -18,20 +18,6 @@
         <div class="my-8">
             <MailToLink />
         </div>
-        <div class="relative bg-white">
-            <div class="my-8 mx-auto">
-                <div class="" id="booking-page">
-                    <!-- this is where we will inject the interface -->
-                </div>
-            </div>
-            <script>window.SavvyCal=window.SavvyCal||function(){(SavvyCal.q=SavvyCal.q||[]).push(arguments)};</script>
-            <script async src="https://embed.savvycal.com/v1/embed.js"></script>
-            <script>
-                SavvyCal('init');
-                SavvyCal('inline', { link: 'mattlangeman/7085e1b0', selector: '#booking-page' });
-            </script>
-        </div>
-
     </div>
     </svelte:fragment>
 </BasicPage>

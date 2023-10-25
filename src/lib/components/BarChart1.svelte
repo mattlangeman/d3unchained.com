@@ -25,6 +25,27 @@
             stepNum = stepNum - 1
         }
     }
+
+    /*
+    let scrollContainer;
+    let windowWidth;
+    let objectRef;
+    $: dynamicHeight = scrollContainer ? handleDynamicHeight(scrollContainer) : null;
+    $: windowWidth,
+        (dynamicHeight = scrollContainer ? handleDynamicHeight(scrollContainer) : null);
+
+    $: calcDynamicHeight = (objectWidth) => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        return objectWidth - vw + vh + 150;
+    };
+
+    $: handleDynamicHeight = () => {
+        const objectWidth = objectRef.scrollWidth;
+        const dynamicHeight = calcDynamicHeight(objectWidth);
+        return dynamicHeight;
+    };
+    */
 </script>
 
 <svelte:head>
@@ -37,15 +58,25 @@
     <div class="grid grid-cols-2 gap-x-2 mt-4">
         <div>
             <Snippet/>
-            <h2>Standard D3</h2>
-            <CodeDisplay codeString={SnippetString} {stepNum} />
         </div>
         <div>
             <Snippet2/>
-            <h2>Svelte and D3</h2>
-            <CodeDisplay codeString={Snippet2String} {stepNum}/>
         </div>
     </div>
+    <div class="">
+        <div
+            class="grid grid-cols-2 gap-x-2 mt-4 sticky top-20">
+                <div class="">
+                    <h2>Standard D3</h2>
+                    <CodeDisplay codeString={SnippetString} {stepNum} />
+                </div>
+                <div>
+                    <h2>Svelte and D3</h2>
+                    <CodeDisplay codeString={Snippet2String} {stepNum}/>
+                </div>
+        </div>
+    </div>
+
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={previousStep}>Previous Step</button>
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={nextStep}>Next Step</button>
     <br/><br/>
