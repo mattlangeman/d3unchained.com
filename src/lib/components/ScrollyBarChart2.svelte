@@ -13,7 +13,7 @@
     $: stepNum = value
 
     let stepCommentRegex = /<!--[\s\S]*?-->/g
-    let commentStr = SnippetString.match(stepCommentRegex)[0]
+    let commentStr = Snippet2String.match(stepCommentRegex)[0]
 
     // Removing the HTML comment delimiters and splitting by the "Step" keyword
     let steps = commentStr.replace(/<!--|-->/g, '').trim().split(/\bStep\b/).filter(Boolean);
@@ -82,7 +82,6 @@
 
 
     $: visibleStep1 = Math.max(Math.floor(scrollInContainer), 0) + 1;
-    $: visibleStep2 = visibleStep1 + 1;
     $: activeStep = Math.max(Math.floor(scrollInContainer + .15), 0) + 1;
     $: percentageStep = (scrollY - scrollContainerY > 0) ? (scrollInContainer - Math.floor(scrollInContainer)) * 100 : 0;
 </script>
@@ -96,10 +95,10 @@
 <div class="mt-4">
     <h2 class="text-3xl font-bold">Using divs vs using svg</h2>
     <div class="grid md:grid-cols-2 gap-x-4 mt-4 overflow-hidden">
-        <div>
+        <div class="hidden md:block">
             <Snippet/>
         </div>
-        <div class="hidden md:block">
+        <div>
             <Snippet2/>
         </div>
     </div>
@@ -115,10 +114,10 @@
         </div>
         <div bind:this={stickyContainer} class="w-[99.9%] h-[80vh] sticky-code sticky top-4">
             <div bind:this={stickyCodeContainer} class="grid md:grid-cols-2 gap-x-4 relative" bind:clientHeight={stickyCodeHeight}>
-                <div class="bg-[#2f2f2f] overflow-hidden">
+                <div class="hidden md:block bg-[#2f2f2f] overflow-hidden">
                     <CodeDisplay codeString={SnippetString} stepNum={activeStep} />
                 </div>
-                <div class="hidden md:block bg-[#2f2f2f] overflow-hidden">
+                <div class="bg-[#2f2f2f] overflow-hidden">
                     <CodeDisplay codeString={Snippet2String} stepNum={activeStep}/>
                 </div>
                 <div class="w-full bottom-0 overflow-hidden" style="position: {stepContainerPosition}">

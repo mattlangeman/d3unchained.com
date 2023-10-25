@@ -3,14 +3,14 @@
 
     let data = [4, 8, 15, 16, 23, 42]
 
-    let chartWdith = 420;
-
-    let xScale = d3.scaleLinear()
+    let chartContainerWidth;
+    $: chartWidth = chartContainerWidth ? chartContainerWidth * .9 : 0
+    $: xScale = d3.scaleLinear()
         .domain([0, d3.max(data)])
-        .range([0, chartWdith])
+        .range([0, chartWidth])
 </script>
 
-<div class="bar-chart">
+<div class="bar-chart" bind:clientWidth={chartContainerWidth}>
     {#each data as d}
         <div class="bar"
             style="width:{xScale(d)}px;">
