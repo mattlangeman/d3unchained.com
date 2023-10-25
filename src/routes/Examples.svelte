@@ -11,14 +11,16 @@
         {
             'title': 'Srolly Bar Example',
             'url': 'scrolly-bar-chart-v1',
-            'description': `This example uses scrollytelling to compare a bar chart using standard D3 code with one using Svelte + D3 code.`,            'svg': `<svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            'description': `This example uses scrollytelling to compare a bar chart using standard D3 code with one using Svelte + D3 code.`,
+            'svg': `<svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                     </svg>`
         },
         {
             'title': 'Srolly Bar Example 2',
             'url': 'scrolly-bar-chart-v2',
-            'description': `This example uses scrollytelling to compare a bar chart using standard D3 code with one using Svelte + D3 code.`,            'svg': `<svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            'description': `This example uses scrollytelling to compare a bar chart using divs with code with one using svg.`,
+            'svg': `<svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                     </svg>`
         },
