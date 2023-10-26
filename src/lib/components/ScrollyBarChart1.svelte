@@ -1,9 +1,6 @@
 <script>
+    import * as d3 from "d3";
     import { onMount } from 'svelte';
-    import { fly, slide, fade } from 'svelte/transition'
-
-    import { cubicOut } from 'svelte/easing';
-
 
     import CodeDisplay from "./CodeDisplay.svelte";
     import Snippet from "./snippets/d3-bar-chart.svelte";
@@ -11,24 +8,10 @@
     import SnippetString from "./snippets/d3-bar-chart.svelte?raw";
     import Snippet2String from "./snippets/d3-bar-chart-v2.svelte?raw";
 
-    import Scrolly from "$lib/utils/Scrolly.svelte";
-
-    function fadeSlide(node, { duration, x }) {
-        return {
-            duration,
-            css: (t, u) => `
-            transform: translateX(${u * x}px);
-            opacity: ${t}
-            `,
-            easing: cubicOut,
-        };
-    }
-
-
     let value;
 
     let topOffset = 0;
-    $: stepNum = Math.max(value, 1)
+    $: stepNum = currentStep
 
     let stepCommentRegex = /<!--[\s\S]*?-->/g
     let commentStr = Snippet2String.match(stepCommentRegex)[0]
@@ -58,9 +41,32 @@
     let stickyCodeContainer;
     let scrollContainer;
 
+    let scrollContainerTop;
+    let stickyContainerTop;
+    let scrollDiff = 0;
+
+    $: scrollStepHeight = innerHeight * 0.8
+    $: scrollStepWidth = innerWidth;
+    $: scrollContainerHeight = scrollStepHeight * numSteps;
+    $: stepContainerWidth = innerWidth * numSteps;
+
+    // create scale that translates vertical scroll within scrollContainer
+    // to horizontal scroll within stepContainer
+
+    $: scrollStepScale = d3.scaleLinear()
+        .domain([0, scrollContainerHeight])
+        .range([0, stepContainerWidth])
+
+    $: currentStep = (scrollDiff && scrollStepWidth) ? Math.floor((-scrollDiff + scrollStepHeight*.5) / scrollStepHeight)+1 : 1;
+
     let highlightDivs = [];
     onMount(() => {
         const updateStepContainerPostion = () => {
+            // get top position of scroll container
+            scrollContainerTop = scrollContainer.getBoundingClientRect().top;
+            stickyContainerTop = stickyContainer.getBoundingClientRect().top;
+            scrollDiff = scrollContainerTop - stickyContainerTop;
+
             highlightDivs = document.querySelectorAll('.line-highlight');
             let minTop = 9999;
             let maxTop = 0;
@@ -72,6 +78,7 @@
             }
             if (minTop > 300 && minTop < 9999) topOffset = -minTop + 40;
             else topOffset = 0;
+
         };
 
         window.addEventListener('scroll', updateStepContainerPostion);
@@ -82,8 +89,7 @@
         };
     });
 
-    $: scrollContainerHeight = numSteps * innerHeight * 0.8;
-    $: stepContainerWidth = numSteps * innerWidth;
+
 
 </script>
 
@@ -94,28 +100,24 @@
 <svelte:window bind:innerHeight={innerHeight} bind:innerWidth={innerWidth} bind:scrollY={scrollY}/>
 
 <div class="mt-4">
-    <h2 class="text-3xl font-bold">Standard D3 vs Svelte and D3</h2>
-    <div class="grid md:grid-cols-2 gap-x-4 mt-4 overflow-hidden">
-        <div class="hidden md:block">
-            <Snippet/>
-        </div>
-        <div>
-            <Snippet2/>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
+        <h2 class="text-3xl font-bold">Standard D3 vs Svelte and D3</h2>
+        <div class="grid md:grid-cols-2 gap-x-4 mt-4 overflow-hidden">
+            <div class="hidden md:block">
+                <Snippet/>
+            </div>
+            <div>
+                <Snippet2/>
+            </div>
         </div>
     </div>
     <div class="section-container flex mt-2">
         <div bind:this={scrollContainer} style="height: {scrollContainerHeight}px;"
             class="code-steps invisible w-[0.1%]">
-            <Scrolly bind:value>
-            {#each parsedSteps as step}
-                <div class="step h-[90vh]">
-                </div>
-            {/each}
-            </Scrolly>
         </div>
         <div bind:this={stickyContainer}
             class="w-[99.9%] h-[90vh] relative sticky-code sticky top-4 overflow-hidden">
-            <div bind:this={stickyCodeContainer} class="grid md:grid-cols-2 gap-x-4 relative">
+            <div bind:this={stickyCodeContainer} class="grid md:grid-cols-2 gap-x-4 relative h-full">
                 <div class="hidden md:block bg-[#2f2f2f] overflow-hidden">
                     <CodeDisplay
                         codeString={SnippetString}
@@ -131,20 +133,16 @@
                     />
                 </div>
             </div>
-            <div class="w-full bottom-0 overflow-hidden absolute grid">
-                <div class="relative w-full h-40">
+            <div class="absolute grid grid-cols-8 bottom-0 overflow-hidden"
+                style="width: {stepContainerWidth}px; transform: translateX({scrollStepScale(scrollDiff)}px);">
                     {#each parsedSteps as step, index (index)}
-                        {#if index === stepNum-1 }
-                        <div class='absolute bottom-0 w-80 border bg-white rounded p-4 m-4'
-                            in:fadeSlide={{ duration: 1000, x: innerWidth }}
-                            out:fadeSlide={{ duration: 1000, x: -200 }}
-                        >
-                            <div class="text-sm text-gray-400">{step.step}</div>
-                            <div class="text-xs text-gray-400">{step.description}</div>
+                    <div class="flex justify-center">
+                        <div class='w-[80%] sm:w-[70%] md:w-[50%] lg:w-[600px] border bg-white rounded p-4 m-4 opacity-90'>
+                            <div class="text-md text-gray-600">{step.description}</div>
                         </div>
-                        {/if}
+                    </div>
+
                     {/each}
-                </div>
             </div>
         </div>
     </div>

@@ -1,11 +1,11 @@
 <script>
-    import BasicPage from "../../BasicPage.svelte";
+    import BasicPageFullWidth from "../../BasicPageFullWidth.svelte";
     import ScrollyBarChart2 from "$lib/components/ScrollyBarChart2.svelte";
 </script>
 
-<BasicPage>
-    <span slot="title">Bar Chart v1</span>
+<BasicPageFullWidth>
+    <span slot="title">Bar Chart v2</span>
     <span slot="content">
         <ScrollyBarChart2 />
     </span>
-</BasicPage>
+</BasicPageFullWidth>
