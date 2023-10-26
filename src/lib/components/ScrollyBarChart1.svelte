@@ -1,6 +1,9 @@
 <script>
     import { onMount } from 'svelte';
-    import { tweened } from "svelte/motion";
+    import { fly, slide, fade } from 'svelte/transition'
+
+    import { cubicOut } from 'svelte/easing';
+
 
     import CodeDisplay from "./CodeDisplay.svelte";
     import Snippet from "./snippets/d3-bar-chart.svelte";
@@ -10,10 +13,22 @@
 
     import Scrolly from "$lib/utils/Scrolly.svelte";
 
+    function fadeSlide(node, { duration, x }) {
+        return {
+            duration,
+            css: (t, u) => `
+            transform: translateX(${u * x}px);
+            opacity: ${t}
+            `,
+            easing: cubicOut,
+        };
+    }
+
+
     let value;
 
     let topOffset = 0;
-    $: stepNum = value
+    $: stepNum = Math.max(value, 1)
 
     let stepCommentRegex = /<!--[\s\S]*?-->/g
     let commentStr = Snippet2String.match(stepCommentRegex)[0]
@@ -42,28 +57,10 @@
     let stickyContainer;
     let stickyCodeContainer;
     let scrollContainer;
-    let stepContainer;
-
-    let stickyCodeContainerTop = 0;
-    let stickyCodeContainerBottom = 0;
-    let stepContainerTop = 0;
-    let stepContainerBottom = 0;
-    let scrollContainerY = 0;
 
     let highlightDivs = [];
     onMount(() => {
         const updateStepContainerPostion = () => {
-
-            stepContainerTop = stepContainer.getBoundingClientRect().top;
-            stepContainerBottom = stepContainer.getBoundingClientRect().bottom
-            scrollContainerY = scrollContainer.getBoundingClientRect().top + scrollY;
-            stickyCodeContainerTop = stickyCodeContainer.getBoundingClientRect().top;
-            stickyCodeContainerBottom = stickyCodeContainer.getBoundingClientRect().bottom;
-            if (stepContainerBottom > innerHeight - 10 && (stepContainerBottom - stickyCodeContainerBottom) < 2 ) {
-                //stepContainerPosition = 'fixed';
-            } else {
-                stepContainerPosition = 'absolute';
-            }
             highlightDivs = document.querySelectorAll('.line-highlight');
             let minTop = 9999;
             let maxTop = 0;
@@ -85,16 +82,9 @@
         };
     });
 
-    $: stickyContainerHeight = innerHeight * 0.8;
     $: scrollContainerHeight = numSteps * innerHeight * 0.8;
+    $: stepContainerWidth = numSteps * innerWidth;
 
-    $: scrollInContainer = scrollContainer ?  (scrollY - scrollContainerY) / stickyContainerHeight: 0;
-
-    let stepContainerPosition = 'absolute';
-
-    $: visibleStep1 = Math.max(Math.floor(scrollInContainer), 0) + 1;
-    $: activeStep = Math.max(Math.floor(scrollInContainer + .15), 0) + 1;
-    $: percentageStep = (scrollY - scrollContainerY > 0) ? (scrollInContainer - Math.floor(scrollInContainer)) * 100 : 0;
 </script>
 
 <svelte:head>
@@ -118,7 +108,7 @@
             class="code-steps invisible w-[0.1%]">
             <Scrolly bind:value>
             {#each parsedSteps as step}
-                <div class="step h-[80vh]">
+                <div class="step h-[90vh]">
                 </div>
             {/each}
             </Scrolly>
@@ -129,26 +119,30 @@
                 <div class="hidden md:block bg-[#2f2f2f] overflow-hidden">
                     <CodeDisplay
                         codeString={SnippetString}
-                        stepNum={activeStep}
+                        stepNum={stepNum}
                         topOffset={topOffset}
                     />
                 </div>
                 <div class="bg-[#2f2f2f] overflow-hidden">
                     <CodeDisplay
                         codeString={Snippet2String}
-                        stepNum={activeStep}
+                        stepNum={stepNum}
                         topOffset={topOffset}
                     />
                 </div>
             </div>
-            <div class="w-full bottom-0 overflow-hidden" style="position: {stepContainerPosition}">
-                <div bind:this={stepContainer} class="relative w-full h-40">
-                    {#each parsedSteps as step, index}
-                    <div class={`absolute bottom-0 w-80 border bg-white rounded p-4 m-4 transition-opacity ease-in duration-700 ${index === visibleStep1-1 || (index == visibleStep1 && percentageStep > 80) ? 'block opacity-1' : 'hidden opacity-0'}`}
-                        style={`right: ${index === visibleStep1-1 ? percentageStep : percentageStep-100}%;`}>
+            <div class="w-full bottom-0 overflow-hidden absolute grid">
+                <div class="relative w-full h-40">
+                    {#each parsedSteps as step, index (index)}
+                        {#if index === stepNum-1 }
+                        <div class='absolute bottom-0 w-80 border bg-white rounded p-4 m-4'
+                            in:fadeSlide={{ duration: 1000, x: innerWidth }}
+                            out:fadeSlide={{ duration: 1000, x: -200 }}
+                        >
                             <div class="text-sm text-gray-400">{step.step}</div>
                             <div class="text-xs text-gray-400">{step.description}</div>
                         </div>
+                        {/if}
                     {/each}
                 </div>
             </div>
