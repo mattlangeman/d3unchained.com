@@ -18,6 +18,9 @@ module.exports = {
         header: ["Montserrat", "Open Sans", ...defaultTheme.fontFamily.sans],
         body: ["Open Sans", ...defaultTheme.fontFamily.sans],
       },
+      transitionProperty: {
+        'top': 'top'
+      },
     },
   },
   plugins: [],

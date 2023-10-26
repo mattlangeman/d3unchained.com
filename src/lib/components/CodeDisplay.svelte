@@ -9,6 +9,7 @@
 
     export let codeString;
     export let stepNum = 0;
+    export let topOffset = 0;
 
     let stepCommentRegex = /<!--[\s\S]*?-->/g
     let commentStr = codeString.match(stepCommentRegex)[0]
@@ -52,7 +53,10 @@
     let codeStringDisplay = codeString.replace(stepCommentRegex, "")
 </script>
 
-<pre bind:this={pre} class="language-svelte line-numbers overflow-hidden" data-line="{lines}">
+<pre bind:this={pre}
+    class="language-svelte line-numbers transition-top duration-1000 ease-in-out"
+    style="top: {topOffset}px;"
+    data-line="{lines}">
 <code class="overflow-hidden">{codeStringDisplay}</code>
 </pre>
 

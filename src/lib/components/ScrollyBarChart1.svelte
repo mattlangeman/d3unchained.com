@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { tweened } from "svelte/motion";
 
     import CodeDisplay from "./CodeDisplay.svelte";
     import Snippet from "./snippets/d3-bar-chart.svelte";
@@ -10,6 +11,8 @@
     import Scrolly from "$lib/utils/Scrolly.svelte";
 
     let value;
+
+    let topOffset = 0;
     $: stepNum = value
 
     let stepCommentRegex = /<!--[\s\S]*?-->/g
@@ -41,14 +44,13 @@
     let scrollContainer;
     let stepContainer;
 
-    let stickyCodeHeight;
-
     let stickyCodeContainerTop = 0;
     let stickyCodeContainerBottom = 0;
     let stepContainerTop = 0;
     let stepContainerBottom = 0;
     let scrollContainerY = 0;
 
+    let highlightDivs = [];
     onMount(() => {
         const updateStepContainerPostion = () => {
 
@@ -58,10 +60,21 @@
             stickyCodeContainerTop = stickyCodeContainer.getBoundingClientRect().top;
             stickyCodeContainerBottom = stickyCodeContainer.getBoundingClientRect().bottom;
             if (stepContainerBottom > innerHeight - 10 && (stepContainerBottom - stickyCodeContainerBottom) < 2 ) {
-                stepContainerPosition = 'fixed';
+                //stepContainerPosition = 'fixed';
             } else {
                 stepContainerPosition = 'absolute';
             }
+            highlightDivs = document.querySelectorAll('.line-highlight');
+            let minTop = 9999;
+            let maxTop = 0;
+            for (let i = 0; i < highlightDivs.length; i++) {
+                // get the top of the highlight div based on style top
+                let top = parseInt(highlightDivs[i].style.top.replace('px', ''));
+                if (top < minTop) minTop = top
+                if (top > maxTop) maxTop = top
+            }
+            if (minTop > 300 && minTop < 9999) topOffset = -minTop + 40;
+            else topOffset = 0;
         };
 
         window.addEventListener('scroll', updateStepContainerPostion);
@@ -79,10 +92,7 @@
 
     let stepContainerPosition = 'absolute';
 
-
-
     $: visibleStep1 = Math.max(Math.floor(scrollInContainer), 0) + 1;
-    $: visibleStep2 = visibleStep1 + 1;
     $: activeStep = Math.max(Math.floor(scrollInContainer + .15), 0) + 1;
     $: percentageStep = (scrollY - scrollContainerY > 0) ? (scrollInContainer - Math.floor(scrollInContainer)) * 100 : 0;
 </script>
@@ -113,24 +123,33 @@
             {/each}
             </Scrolly>
         </div>
-        <div bind:this={stickyContainer} class="w-[99.9%] h-[80vh] sticky-code sticky top-4">
-            <div bind:this={stickyCodeContainer} class="grid md:grid-cols-2 gap-x-4 relative" bind:clientHeight={stickyCodeHeight}>
+        <div bind:this={stickyContainer}
+            class="w-[99.9%] h-[90vh] relative sticky-code sticky top-4 overflow-hidden">
+            <div bind:this={stickyCodeContainer} class="grid md:grid-cols-2 gap-x-4 relative">
                 <div class="hidden md:block bg-[#2f2f2f] overflow-hidden">
-                    <CodeDisplay codeString={SnippetString} stepNum={activeStep} />
+                    <CodeDisplay
+                        codeString={SnippetString}
+                        stepNum={activeStep}
+                        topOffset={topOffset}
+                    />
                 </div>
                 <div class="bg-[#2f2f2f] overflow-hidden">
-                    <CodeDisplay codeString={Snippet2String} stepNum={activeStep}/>
+                    <CodeDisplay
+                        codeString={Snippet2String}
+                        stepNum={activeStep}
+                        topOffset={topOffset}
+                    />
                 </div>
-                <div class="w-full bottom-0 overflow-hidden" style="position: {stepContainerPosition}">
-                    <div bind:this={stepContainer} class="relative w-full h-40">
-                        {#each parsedSteps as step, index}
-                        <div class={`absolute bottom-0 w-80 border bg-white rounded p-4 m-4 transition-opacity ease-in duration-700 ${index === visibleStep1-1 || (index == visibleStep1 && percentageStep > 80) ? 'block opacity-1' : 'hidden opacity-0'}`}
-                            style={`right: ${index === visibleStep1-1 ? percentageStep : percentageStep-100}%;`}>
-                                <div class="text-sm text-gray-400">{step.step}</div>
-                                <div class="text-xs text-gray-400">{step.description}</div>
-                            </div>
-                        {/each}
-                    </div>
+            </div>
+            <div class="w-full bottom-0 overflow-hidden" style="position: {stepContainerPosition}">
+                <div bind:this={stepContainer} class="relative w-full h-40">
+                    {#each parsedSteps as step, index}
+                    <div class={`absolute bottom-0 w-80 border bg-white rounded p-4 m-4 transition-opacity ease-in duration-700 ${index === visibleStep1-1 || (index == visibleStep1 && percentageStep > 80) ? 'block opacity-1' : 'hidden opacity-0'}`}
+                        style={`right: ${index === visibleStep1-1 ? percentageStep : percentageStep-100}%;`}>
+                            <div class="text-sm text-gray-400">{step.step}</div>
+                            <div class="text-xs text-gray-400">{step.description}</div>
+                        </div>
+                    {/each}
                 </div>
             </div>
         </div>
